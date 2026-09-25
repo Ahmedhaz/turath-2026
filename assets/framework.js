@@ -24,8 +24,8 @@
   d.querySelectorAll('[data-count]').forEach(function (el) { var c = cnt[el.dataset.count]; if (c) el.textContent = num(c) });
 
   function show(k, v, btn) {
-    d.querySelectorAll('.layer.on,.ail.on,.arc.on,.station.on').forEach(function (e) { e.classList.remove('on') });
-    if (btn) btn.classList.add('on');
+    d.querySelectorAll('[data-k].on').forEach(function (e) { e.classList.remove('on') });
+    d.querySelectorAll('[data-k="' + k + '"][data-v="' + v + '"]').forEach(function (e) { e.classList.add('on') });
     var title = '', sub = '', html = '';
     v = +v;
     if (k === 's') {
@@ -59,7 +59,8 @@
   function show_empty() { panel.innerHTML = empty; d.querySelectorAll('.on').forEach(function (e) { if (!e.closest('.nav')) e.classList.remove('on') }) }
 
   d.querySelectorAll('[data-k]').forEach(function (b) {
-    b.addEventListener('click', function () { show(b.dataset.k, b.dataset.v, b); history.replaceState(null, '', '#' + (b.id || '')) });
+    b.addEventListener('click', function () { show(b.dataset.k, b.dataset.v, b); if (b.id) history.replaceState(null, '', '#' + b.id) });
+    if (b.tagName.toLowerCase() === 'g') b.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); b.dispatchEvent(new Event('click')) } });
   });
   var h = location.hash.slice(1), el = h && d.getElementById(h);
   if (el && el.dataset.k) { show(el.dataset.k, el.dataset.v, el); setTimeout(function () { el.scrollIntoView({ block: 'center' }) }, 50) }

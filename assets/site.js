@@ -40,3 +40,15 @@
     addEventListener('scroll', tick, { passive: true }); tick();
   }
 })();
+
+// scroll reveal + count-up (shared)
+(function () {
+  var els = document.querySelectorAll('.reveal');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!('IntersectionObserver' in window) || reduce) { els.forEach(function (e) { e.classList.add('in') }); return; }
+  document.documentElement.classList.add('js-reveal');
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target) } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (e, i) { e.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(e) });
+})();
