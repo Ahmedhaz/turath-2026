@@ -569,3 +569,6 @@ html[dir="rtl"] .hw-hero-art .hw-cover{transform:rotate(4deg)}
 .ph-nav span{text-align:center;font-size:10.5px;color:#7A8587}
 .ph-nav span.on{color:#0E4A54;font-weight:700}
 .ph-screen .ph-two,.ph-screen .ph-act{margin-top:auto}
+.unit-head h1.matn{font-family:"Amiri","Noto Naskh Arabic",serif;font-size:clamp(1.35rem,2.8vw,1.9rem);line-height:1.9;font-weight:700}
+.unit-head h1.matn::before{content:"«"}.unit-head h1.matn::after{content:"»"}
+.unit-list .t{line-height:1.8}
