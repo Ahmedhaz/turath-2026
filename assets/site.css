@@ -599,3 +599,17 @@ html[dir="rtl"] .hw-hero-art .hw-cover{transform:rotate(4deg)}
 .fw-grid{grid-template-columns:minmax(0,1fr)}@media(min-width:1040px){.fw-grid{grid-template-columns:minmax(0,1fr) 360px}}
 .mk-open{align-self:flex-start;margin-top:.6rem}
 .mk-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.1rem}
+/* الأبحاث */
+.rs-chips{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1rem}
+.rs-chips .chip{border:1px solid var(--line);border-radius:999px;padding:.3rem .8rem;text-decoration:none;color:var(--ink-2);background:var(--card);font-size:.92rem}
+.rs-chips .chip span{color:var(--gold);margin-inline-start:.25rem}
+.rs-wrap{padding-bottom:4rem}
+.rs-group{padding-block:2rem 1rem;border-top:1px solid var(--line);scroll-margin-top:80px}
+.rs-gh{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.1rem}
+.rs-gh h2{margin:0}.rs-gh p{margin:.2rem 0 0}
+.rs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:1rem}
+.rs-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.4rem}
+.rs-card h3{margin:0;font-family:var(--disp);font-size:1.3rem;line-height:1.5}
+.rs-card p{margin:0;color:var(--ink-2);line-height:1.85}
+.rs-card .rs-meta{font-size:.82rem;color:var(--gold);font-weight:600}
+.rs-dl{align-self:flex-start;margin-top:auto}
