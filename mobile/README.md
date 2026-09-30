@@ -1,0 +1,66 @@
+# Turath2026 · native shells
+
+`mobile/` turns the site in this repo ([ahmedhaz.github.io/turath-2026](https://ahmedhaz.github.io/turath-2026/))
+into an iOS and Android app with Capacitor.
+The site itself is never edited: `npm run build` bundles the rest of this repo into `www/`, so the app reads
+**offline**: all 387 pages, the search index and the site's fonts ship inside it.
+Bundle id `com.turath2026.app`, team `M3RPNM736H`, iOS 15.5+, iPhone only, portrait only. Android 6+.
+
+## What the build changes, and why
+
+`scripts/build-www.mjs` copies the site and fixes three things at build time:
+
+| Site | App | Why |
+| --- | --- | --- |
+| Folder links (`./library/`, `../../`) | `./library/index.html` | Capacitor serves any extensionless path as the root page (SPA routing), so a folder link would open the home page. `app/shim.js` does the same at click time for links the site's JS builds (search results, home picks, framework lists). |
+| Google Fonts | `www/fonts/` from `@fontsource` | The same four families and weights (Amiri, Noto Naskh Arabic, IBM Plex Sans Arabic, Newsreader), so it reads offline with the site's own typography. |
+| 21 PDFs (~20 MB) | Links to the live site | Keeps the app small; the OS opens them in the browser or its PDF viewer. |
+
+`npm run check` refuses a `www/` where any local link on any page fails to resolve to a file, where any page
+still loads Google Fonts, or where the shim is missing. The shim also keeps the status bar in step with the site's
+light/dark theme.
+
+## Every build
+
+```
+cd mobile && npm install
+npm run sync          # builds www/ from the site in this repo, checks it, cap sync
+```
+Set `TURATH_SRC=/path/to/turath-2026` to build from another copy of the site.
+
+**Android.** Every push touching `mobile/` runs `.github/workflows/android.yml`, which builds a debug APK and
+uploads it as the `turath2026-debug-apk` artifact. You can also run it by hand from the Actions tab. Locally:
+`npx cap open android`, or `cd android && ./gradlew assembleDebug`. A Play Store release still needs an upload
+keystore (`./gradlew bundleRelease` with signing configured). No keystore is in this repo.
+
+**iOS → TestFlight, from CI (no Mac needed).** `.github/workflows/testflight.yml` builds on a GitHub macOS
+runner, signs with Xcode cloud signing and uploads to App Store Connect. The build number is the run number.
+Once, before the first run:
+1. App Store Connect → Apps → **+** → New App, bundle id `com.turath2026.app`, name Turath2026. If the bundle id
+   is not in the list, register it under Certificates, Identifiers & Profiles → Identifiers.
+2. App Store Connect → Users and Access → Integrations → App Store Connect API → generate a key with the
+   **Admin** role, then add repo secrets `ASC_KEY_ID`, `ASC_ISSUER_ID` and `ASC_KEY_P8` (the whole .p8 file).
+
+Then push a tag from any branch (`git tag ios-1.0 && git push origin ios-1.0`), or use
+Actions → Turath2026 · TestFlight → Run workflow once the file is on `main`.
+
+**iOS, by hand on a Mac.** Same steps as the A Wider Life shell (github.com/Ahmedhaz/a-wider-life-app, `mobile/README.md`). In short:
+```
+brew install cocoapods
+cd mobile && npm install && LANG=en_US.UTF-8 npm run sync
+open ios/App/App.xcworkspace          # then Product → Archive → Distribute App
+```
+`AppDelegate.swift` and `Info.plist` carry the same UIScene fix as the A Wider Life shell (iOS 27 traps at launch
+without it). Create the app record for `com.turath2026.app` in App Store Connect before the first upload.
+
+## Icons and splash
+
+`assets/` holds the sources, drawn from the site's `assets/mark.svg`. After changing them:
+```
+npx capacitor-assets generate --ios --android --iconBackgroundColor '#1F5E57' \
+  --splashBackgroundColor '#F5EFE3' --splashBackgroundColorDark '#15130F'
+```
+
+## What is NOT built
+- No notifications, accounts or anything the site does not do. The app is the site, offline.
+- New site content reaches users only with a new app build. Rebuild after publishing.
