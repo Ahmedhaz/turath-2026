@@ -1,0 +1,68 @@
+name: Turath2026 · App Store listing
+
+# Uploads the store listing (Arabic and English text, privacy and support links, screenshots) to App
+# Store Connect and attaches a build that is already in TestFlight to the version. With "submit" on,
+# it also sends the version to App Review. Uses the same API key secrets as testflight.yml.
+#
+# Before the first submit, a few answers can only be given in App Store Connect itself:
+# App Privacy ("Data Not Collected"), Age Rating, Pricing (Free) and the App Review contact.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "App Store version (the marketing version of the build, e.g. 1.2)"
+        required: true
+      build:
+        description: "Build number from TestFlight (the testflight.yml run number)"
+        required: true
+      submit:
+        description: "Submit for review after uploading"
+        type: boolean
+        default: false
+
+jobs:
+  listing:
+    name: Upload listing and screenshots
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - run: gem install fastlane --no-document
+      - name: API key
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do
+            [ -n "${!v}" ] || { echo "::error::Missing repository secret $v"; exit 1; }
+          done
+          python3 - <<'PY'
+          import json, os
+          json.dump({"key_id": os.environ["ASC_KEY_ID"], "issuer_id": os.environ["ASC_ISSUER_ID"],
+                     "key": os.environ["ASC_KEY_P8"], "in_house": False},
+                    open(os.path.join(os.environ["RUNNER_TEMP"], "asc.json"), "w"))
+          PY
+      - name: Deliver
+        env:
+          VERSION: ${{ inputs.version }}
+          BUILD: ${{ inputs.build }}
+          SUBMIT: ${{ inputs.submit }}
+        run: |
+          fastlane deliver \
+            --api_key_path "$RUNNER_TEMP/asc.json" \
+            --app_identifier com.turath2026.app --platform ios \
+            --app_version "$VERSION" --build_number "$BUILD" \
+            --metadata_path mobile/fastlane/metadata \
+            --screenshots_path mobile/fastlane/screenshots --overwrite_screenshots true \
+            --skip_binary_upload true --skip_app_version_update false \
+            --primary_category BOOKS --secondary_category EDUCATION \
+            --copyright "2026 Turath2026" \
+            --submit_for_review "$SUBMIT" --automatic_release true \
+            --submission_information '{"add_id_info_uses_idfa": false}' \
+            --run_precheck_before_submit false --force true
+      - name: Remove the key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/asc.json"
