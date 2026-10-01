@@ -63,6 +63,24 @@ and `open ios/App/App.xcworkspace`. Always set `LANG`: CocoaPods fails on the Ar
 `AppDelegate.swift` and `Info.plist` carry a UIScene delegate, which iOS 27 requires of apps built against the
 iOS 26 SDK.
 
+## Publishing to the App Store
+
+The listing lives in `fastlane/`: Arabic and English text in `metadata/<locale>/` (subtitle, description, keywords,
+promotional text, privacy, support and marketing links) and seven 1320×2868 screenshots per locale in
+`screenshots/`. The privacy policy and support pages are part of the site: `privacy/` and `app/` at the repo root.
+
+1. Ship the build: Actions → Turath2026 · TestFlight → Run workflow (version, e.g. `1.2`). Note the run number:
+   it is the build number.
+2. Once, in App Store Connect (only the account holder can answer these): **App Privacy** → "Data Not Collected";
+   **Age Rating** questionnaire (no objectionable content; 4+); **Pricing and Availability** → Free; **App Review
+   Information** → a contact name, phone and email.
+3. Actions → Turath2026 · App Store listing → Run workflow with the same version and build number. It uploads the
+   text and screenshots and attaches the build. Tick **submit** to send it to App Review in the same run, or press
+   "Add for Review" in App Store Connect afterwards. Releases go out automatically once Apple approves.
+
+The screenshots were taken from the real app (with a seeded reading history) and framed with Arabic captions;
+redo them after a visible design change.
+
 ## Icons and splash
 
 `assets/` holds the sources, drawn from the site's `assets/mark.svg`. After changing them:

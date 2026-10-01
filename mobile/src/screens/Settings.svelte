@@ -49,6 +49,7 @@
     <div class="group">
       <a class="item" href="https://ahmedhaz.github.io/turath-2026/about/" target="_blank" rel="noopener"><span>المنهج والإشراف</span><Icon name="chevron" size={18} /></a>
       <a class="item" href="https://ahmedhaz.github.io/turath-2026/research/" target="_blank" rel="noopener"><span>أوراق المشروع وأبحاثه</span><Icon name="chevron" size={18} /></a>
+      <a class="item" href="https://ahmedhaz.github.io/turath-2026/privacy/" target="_blank" rel="noopener"><span>سياسة الخصوصية</span><Icon name="chevron" size={18} /></a>
       <button class="item press" onclick={() => shareText('مدونة استئناف التراث الفكري والروحي لإنسان ٢٠٢٦\nhttps://ahmedhaz.github.io/turath-2026/', 'Turath2026')}><span>شارك التطبيق</span><Icon name="share" size={18} /></button>
     </div>
 
@@ -65,7 +66,7 @@
         </div>
       {/if}
     </div>
-    <p class="foot">كل ما تقرؤه وتحفظه يبقى على جهازك وحده.<br>{ar(cat.books.length)} كتاباً، {ar(cat.units.length)} وحدة، تعمل بلا إنترنت</p>
+    <p class="foot">كل ما تقرؤه وتحفظه يبقى على جهازك وحده.<br>أبواب تزكيةٍ وتربيةٍ وفكر، لا فتوى ولا تشخيصاً إكلينيكياً.<br>{ar(cat.books.length)} كتاباً، {ar(cat.units.length)} وحدة، تعمل بلا إنترنت</p>
   </div>
 </div>
 
