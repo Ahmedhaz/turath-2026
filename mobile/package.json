@@ -4,16 +4,24 @@
   "version": "1.0.0",
   "description": "Native shells (iOS, Android) around the Turath 2026 site in this repo",
   "scripts": {
-    "build": "node scripts/build-www.mjs",
-    "check": "node scripts/check-www.mjs",
+    "extract": "node scripts/extract.mjs",
+    "build": "npm run extract && vite build",
+    "check": "node scripts/check.mjs",
+    "dev": "npm run extract && vite",
     "sync": "npm run build && npm run check && cap sync",
     "ios": "cap open ios",
     "android": "cap open android"
   },
   "dependencies": {
     "@capacitor/android": "7.6.9",
+    "@capacitor/app": "^7.1.2",
     "@capacitor/core": "7.6.9",
+    "@capacitor/filesystem": "^7.1.8",
+    "@capacitor/haptics": "^7.0.5",
     "@capacitor/ios": "7.6.9",
+    "@capacitor/preferences": "^7.0.4",
+    "@capacitor/share": "^7.0.4",
+    "@capacitor/splash-screen": "^7.0.5",
     "@capacitor/status-bar": "^7.0.0"
   },
   "devDependencies": {
@@ -22,6 +30,9 @@
     "@fontsource/amiri": "5.3.0",
     "@fontsource/ibm-plex-sans-arabic": "5.3.0",
     "@fontsource/newsreader": "5.3.0",
-    "@fontsource/noto-naskh-arabic": "5.3.0"
+    "@fontsource/noto-naskh-arabic": "5.3.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "svelte": "^5.57.1",
+    "vite": "^8.3.1"
   }
 }

@@ -4,14 +4,25 @@
   "webDir": "www",
   "backgroundColor": "#F5EFE3",
   "ios": {
-    "contentInset": "automatic",
-    "backgroundColor": "#F5EFE3"
+    "contentInset": "never",
+    "backgroundColor": "#F5EFE3",
+    "scrollEnabled": true
   },
   "android": {
     "backgroundColor": "#F5EFE3",
     "adjustMarginsForEdgeToEdge": "auto"
   },
   "plugins": {
-    "StatusBar": { "overlaysWebView": false, "style": "LIGHT", "backgroundColor": "#F5EFE3" }
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "LIGHT",
+      "backgroundColor": "#F5EFE3"
+    },
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "backgroundColor": "#F5EFE3",
+      "showSpinner": false,
+      "launchFadeOutDuration": 250
+    }
   }
 }
