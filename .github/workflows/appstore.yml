@@ -46,6 +46,9 @@ jobs:
                     open(os.path.join(os.environ["RUNNER_TEMP"], "asc.json"), "w"))
           PY
       - name: Deliver
+        # Run from mobile/ so deliver finds ./fastlane/metadata; from anywhere else it stops to ask
+        # whether to set itself up, which fails in a non-interactive job.
+        working-directory: mobile
         env:
           VERSION: ${{ inputs.version }}
           BUILD: ${{ inputs.build }}
@@ -55,8 +58,8 @@ jobs:
             --api_key_path "$RUNNER_TEMP/asc.json" \
             --app_identifier com.turath2026.app --platform ios \
             --app_version "$VERSION" --build_number "$BUILD" \
-            --metadata_path mobile/fastlane/metadata \
-            --screenshots_path mobile/fastlane/screenshots --overwrite_screenshots true \
+            --metadata_path fastlane/metadata \
+            --screenshots_path fastlane/screenshots --overwrite_screenshots true \
             --skip_binary_upload true --skip_app_version_update false \
             --primary_category BOOKS --secondary_category EDUCATION \
             --copyright "2026 Turath2026" \
