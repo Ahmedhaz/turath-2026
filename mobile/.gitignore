@@ -1,6 +1,6 @@
 node_modules/
-
 www/
+public/data/
 ios/App/Pods/
 ios/App/Podfile.lock
 ios/App/App.xcworkspace/xcuserdata/

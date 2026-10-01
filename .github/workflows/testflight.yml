@@ -63,9 +63,9 @@ jobs:
           mkdir -p ~/.appstoreconnect/private_keys
           printf '%s\n' "$ASC_KEY_P8" > ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8
       - run: npm ci
-      - name: Build www/ from the site
+      - name: Extract the content and build the app
         run: npm run build
-      - name: Every link in the bundle resolves
+      - name: Every chapter, quote and search entry resolves
         run: npm run check
       - name: cap sync ios (copies www/, runs pod install)
         run: ./node_modules/.bin/cap sync ios
